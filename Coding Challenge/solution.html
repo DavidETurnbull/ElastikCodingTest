@@ -1,0 +1,41 @@
+<html>
+<head>
+<script src="solution.js"></script>
+<script type="text/javascript">
+function getSolution(){
+	var input = document.getElementById("input").value;
+	var result = householdSchedule(input);
+	document.getElementById("result").innerHTML = result.replaceAll("\n", "<br />");
+}
+</script>
+<style>
+	textarea, input, div{
+		margin:10px;
+		float:left;
+	}
+</style>
+</head>
+<body>
+<h1>Simple Demo of Coding Challenge Solution</h1>
+<textarea name="input" rows="30" id="input">4
+3
+360 480
+420 540
+600 660
+3
+0 1440
+1 3
+2 4
+5
+99 150
+1 100
+100 301
+2 5
+150 250
+2
+0 720
+720 1440</textarea>
+<input type="button" value="Run" onclick="getSolution();" />
+<div id="result"></div>
+</body>
+</html>
