@@ -2,11 +2,14 @@ import './App.css';
 import Login from './components/login';
 import Dashboard from './components/dashboard';
 import 'bootstrap/dist/css/bootstrap.min.css'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter , Route, Routes } from "react-router-dom";
 
-function App() {
-  let isLoggedIn = false;
+export default function App() {
+  //let isLoggedIn = false;
 
-  return (
+  /*return (
     <div>
       {isLoggedIn ? (
         <Dashboard />
@@ -14,7 +17,16 @@ function App() {
         <Login />
       )}
     </div>
+  );*/
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+      </Routes>
+    </BrowserRouter >
   );
 }
 
-export default App;
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);

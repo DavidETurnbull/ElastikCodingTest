@@ -3,5 +3,7 @@ npm install @coreui/react
 npm install @coreui/coreui --save
 npm install bootstrap
 npm install @coreui/icons @coreui/icons-react
+npm install react-router-dom --save
+npm i -D react-router-dom
 
 npm start

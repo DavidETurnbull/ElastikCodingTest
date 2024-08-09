@@ -45,6 +45,13 @@
   border-radius:10px;
 }
 
+.container.dashboard-container{
+  margin-top:20px;
+  border:1px solid #E0E0E0;
+  padding:20px;
+  border-radius:10px;
+}
+
 .input-group-text > .icon-sm{
   width:18px;
 }
