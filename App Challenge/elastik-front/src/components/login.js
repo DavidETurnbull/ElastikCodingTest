@@ -16,6 +16,7 @@ export default function Login(){
         window.location = '/dashboard';
     }
 
+    //sign up is non-functional, just navigate to the dashboard
     return (
         <CContainer className="login-container">
             <CTabs activeItemKey="login">
@@ -25,7 +26,6 @@ export default function Login(){
                     <CTab itemKey="forgot">Forgot Password</CTab>
                 </CTabList>
                 <CTabContent>
-
 
                     <CTabPanel className="p-3" itemKey="signup">
                         <CInputGroup className="mb-3">

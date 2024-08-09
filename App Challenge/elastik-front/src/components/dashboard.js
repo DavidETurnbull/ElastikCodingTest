@@ -6,18 +6,34 @@ import { CIcon } from '@coreui/icons-react';
 import { cilAt, cilAddressBook, cilCalendar, cilClipboard } from '@coreui/icons';
 
 export default function Dashboard() {
+    //controls visibilty of the "add student" modal
     const [createVisible, setCreateVisible] = useState(false);
 
+    //variables of the "add student" form
+    const [createId, setCreateId] = useState('');
+    const [createFName, setCreateFName] = useState('');
+    const [createLName, setCreateLName] = useState('');
+    const [createEmail, setCreateEmail] = useState('');
+    const [createDob, setCreateDob] = useState('');
+
+    //error for the "add student" form
+    const [createError, setCreateError] = useState('');
+
+    //students to display
+    const [items, setItems] = useState(0);
+
+    //load students from the api
     async function loadStudents() {
         try {
             let response = await fetch('https://7w8byan8ag.execute-api.us-east-2.amazonaws.com/students', {
                 method: "GET",
             });
             let responseJson = await response.json();
+            //add delete button
             for(var a=0 ; a<responseJson.length ; a++){
                 responseJson[a].delete = <CButton color="danger"
-                    onClick={deleteStudent}
-                    value={responseJson[a].id}>
+                    onClick = {deleteStudent}
+                    value = {responseJson[a].id}>
                     Delete
                 </CButton>
             };
@@ -27,8 +43,10 @@ export default function Dashboard() {
         }
     }
 
+    //save new student and refresh data
     async function saveNew() {
         try {
+            //validate form inputs
             var error = [];
             if(createId == ""){
                 error.push("Id missing");
@@ -41,10 +59,8 @@ export default function Dashboard() {
             }
             if(createEmail == "") {
                 error.push("email missing");
-            }else if(!createEmail.match(
-                /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                )
-            ){
+            }else if(!createEmail.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)){
+                //above regex found here: https://stackoverflow.com/questions/46155/how-can-i-validate-an-email-address-in-javascript
                 error.push("Invalid email");
             }
             if(createDob == "") {
@@ -54,7 +70,7 @@ export default function Dashboard() {
             if(error.length > 0) {
                 setCreateError(error.join("<br />"));
             } else {
-
+                //inputs are safe, send to API
                 let response = await fetch('https://7w8byan8ag.execute-api.us-east-2.amazonaws.com/students', {
                     method: "PUT",
                     body: JSON.stringify({"id":createId, "fName":createFName, "lName":createLName, "email":createEmail, "dob":createDob}),
@@ -73,10 +89,12 @@ export default function Dashboard() {
         }
     }
 
+    //display "Add Student" modal
     function displayCreate() {
         setCreateVisible(!createVisible);
     }
 
+    //delete student from api and refresh data
     async function deleteStudent(e) {
         try {
             let response = await fetch('https://7w8byan8ag.execute-api.us-east-2.amazonaws.com/students/' + e.target.value, {
@@ -89,6 +107,7 @@ export default function Dashboard() {
         }
     }
 
+    //columns for student data
     const columns = [
         {
           key: 'id',
@@ -121,18 +140,13 @@ export default function Dashboard() {
             _props: { scope: 'col' },
           },
     ];
-    const [items, setItems] = useState(0);
+    
+    //load students on inital page load
     useEffect(() => {
         loadStudents();
     }, []);
 
-    const [createId, setCreateId] = useState('');
-    const [createFName, setCreateFName] = useState('');
-    const [createLName, setCreateLName] = useState('');
-    const [createEmail, setCreateEmail] = useState('');
-    const [createDob, setCreateDob] = useState('');
-    const [createError, setCreateError] = useState('');
-
+    //ideally the Date of Birth should be a Date Picker component from CoreUI, but that's a paid component
     return (
         <CContainer className="container-lg dashboard-container">
             <CButton as="input" type="submit" color="primary" className="mb-3 float-end" onClick={displayCreate} value="Add" />
